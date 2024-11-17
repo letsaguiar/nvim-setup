@@ -1,9 +1,11 @@
 return {
-	{'williamboman/mason.nvim'},
-	{'williamboman/mason-lspconfig.nvim'},
-	{'neovim/nvim-lspconfig'},
-	{'hrsh7th/cmp-nvim-lsp'},
-	{'hrsh7th/nvim-cmp'},
+	'williamboman/mason.nvim',
+	'williamboman/mason-lspconfig.nvim',
+	'neovim/nvim-lspconfig',
+	'hrsh7th/cmp-nvim-lsp',
+	'hrsh7th/nvim-cmp',
+	'hrsh7th/cmp-buffer',
+	'hrsh7th/cmp-path',
 	{
 		"VonHeikemen/lsp-zero.nvim",
 		config = function()
@@ -54,26 +56,39 @@ return {
 					},
 				},
 			})
+			require("lspconfig").clangd.setup({})
 
 			-- Setup CMP
 			local cmp = require("cmp")
 			cmp.setup({
-				sources = {
-					{name = "nvim_lsp"},
-				},
-				snippet = {
-					expand = function(args)
-						vim.snippet.expand(args.body)
-					end,
-				},
-				mapping = cmp.mapping.preset.insert({})
-			})
+    				snippet = {
+      					expand = function(args)
+        					vim.snippet.expand(args.body)
+      					end,
+    				},
+    				window = {
+   				  -- completion = cmp.config.window.bordered(),
+   				  -- documentation = cmp.config.window.bordered(),
+   				},
+   				mapping = cmp.mapping.preset.insert({
+   				  ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+   				  ['<C-f>'] = cmp.mapping.scroll_docs(4),
+   				  ['<C-Space>'] = cmp.mapping.complete(),
+   				  ['<C-e>'] = cmp.mapping.abort(),
+   				  ['<CR>'] = cmp.mapping.confirm({ select = true }),
+   				}),
+   				sources = cmp.config.sources({
+   				  { name = 'nvim_lsp' },
+   				}, {
+   				  { name = 'buffer' },
+   				})
+  			})
 
 			-- Setup Mason
 			require("mason").setup({})
 			require("mason-lspconfig").setup({
 				ensure_installed = { "lua_ls" },
-				automatic_installation = true
+				automatic_installation = true,
 			})
 		end,
 	},
