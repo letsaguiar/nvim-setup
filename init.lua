@@ -1,1 +1,2 @@
-require("core")
+require("core.keybinds")
+require("config.lazy")
