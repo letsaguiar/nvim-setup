@@ -1,7 +1,18 @@
+local map = vim.keymap.set
+
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>vf", vim.cmd.Ex)
+map("n", "<leader>vf", vim.cmd.Ex)
 
-vim.keymap.set("n", "<C-n>", "<cmd>Telescope find_files<cr>")
-vim.keymap.set("n", "<C-f>", "<cmd>Telescope live_grep<cr>")
+-- Basic Search
+map("n", "<C-f>", [[:%s///g<Left><Left>]], { noremap = true, silent = false })
 
-vim.keymap.set("n", "<C-u>", "<cmd>UndotreeToggle<cr>")
+-- Telescope
+map("n", "<leader>ff", "<cmd>Telescope find_files<cr>")
+map("n", "<leader>fg", "<cmd>Telescope live_grep<cr>")
+
+-- Undotree
+map("n", "<leader>u", "<cmd>UndotreeToggle<cr>")
+
+-- Nvim Tree
+map("n", "<leader>e", "<cmd>NvimTreeToggle<cr>")
+map("n", "<leader>p", "<cmd>NvimTreeFocus<cr>")
